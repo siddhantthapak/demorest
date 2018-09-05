@@ -13,7 +13,7 @@ public class AlienRepository {
         String username = "root";
         String password = "root";
         try{
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
         }catch(Exception e){
             System.out.println(e);
@@ -34,9 +34,6 @@ public class AlienRepository {
                 a.setPoint(point);
                 aliens.add(a);
             }
-            resultSet.close();
-            statement.close();
-            connection.close();
 
         }catch(Exception e){
             System.out.println(e);
@@ -58,9 +55,7 @@ public class AlienRepository {
                a.setName(name1);
                a.setPoint(point);
            }
-           resultSet.close();
-           statement.close();
-           connection.close();
+
 
         }catch(Exception e){
             System.out.println(e);
@@ -75,14 +70,36 @@ public class AlienRepository {
             preparedStatement.setString(1,alien.getName());
             preparedStatement.setInt(2,alien.getPoint());
             preparedStatement.executeUpdate();
-
-            preparedStatement.close();
-            connection.close();
         }catch(Exception e){
             System.out.println(e);
         }
+    }
+
+    public void updateAlien(Alien alien){
+        String sql = "update alien set point=? where name=?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, alien.getPoint());
+            preparedStatement.setString(2, alien.getName());
+            preparedStatement.executeUpdate();
 
 
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+
+    public void deleteAlien(Alien alien){
+        String sql = "delete from alien where name=?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, alien.getName());
+            preparedStatement.executeUpdate();
+
+
+        }catch(Exception e){
+            System.out.println(e);
+        }
 
     }
 
